@@ -1,0 +1,33 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Logs
+logs/
+*.log
+
+# Environnements
+env
+env.local
+env.*.local
+
+# Systèmes d'exploitation
+DS_Store
+Thumbs.db
+
+# IDEs et éditeurs
+idea/
+vscode/
+*.swp
+Copier
+Explications :
+
+node_modules/ : Exclut le dossier contenant les dépendances installées par npm ou yarn.
+
+*.log : Ignore tous les fichiers de log générés.
+
+.env : Empêche le suivi des fichiers contenant des variables d'environnement sensibles.
+
+.DS_Store et Thumbs.db : Exclut les fichiers système spécifiques à macOS et Windows.
