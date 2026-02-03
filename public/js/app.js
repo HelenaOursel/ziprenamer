@@ -15,11 +15,16 @@ document.addEventListener('alpine:init', () => {
         currentTranslations: {},
 
         init() {
-            // Load default language
-            this.setLang('en');
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // Handle Language from URL or default
+            const langParam = urlParams.get('lang');
+            const allowedLangs = ['en', 'fr', 'es'];
+            const startLang = allowedLangs.includes(langParam) ? langParam : 'en';
+
+            this.setLang(startLang);
 
             // Check for payment session_id in URL
-            const urlParams = new URLSearchParams(window.location.search);
             const sessionId = urlParams.get('session_id');
             if (sessionId) {
                 this.verifyPayment(sessionId);

@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://ziprenamer.pro/sitemap.xml
+
+Sitemap: https://ziprenamer.com/sitemap.xml

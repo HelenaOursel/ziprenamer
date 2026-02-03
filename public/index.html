@@ -8,13 +8,25 @@
     <meta name="description"
         content="The easiest way to batch rename files inside a ZIP archive online. Bulk rename, regex replace, add numbering, and reorganize files without extracting.">
     <meta name="keywords"
-        content="zip file renamer, batch rename files, online zip tools, bulk rename utility, regex rename files">
+        content="zip file renamer, batch rename files, online zip tools, bulk rename utility, regex rename files, online zip editor">
+
+    <!-- Canonical & SEO -->
+    <link rel="canonical" href="https://ziprenamer.com/">
+    <link rel="alternate" hreflang="en" href="https://ziprenamer.com/?lang=en" />
+    <link rel="alternate" hreflang="fr" href="https://ziprenamer.com/?lang=fr" />
+    <link rel="alternate" hreflang="es" href="https://ziprenamer.com/?lang=es" />
+    <link rel="alternate" hreflang="x-default" href="https://ziprenamer.com/" />
+
+    <!-- Open Graph / Social -->
     <meta property="og:title" content="ZipRenamer Pro - Batch Rename Files in ZIP Archives">
     <meta property="og:description"
         content="Stop extracting and re-zipping. Rename files inside your ZIP archives instantly online.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://ziprenamer.pro/">
+    <meta property="og:url" content="https://ziprenamer.com/">
+    <meta property="og:image" content="https://ziprenamer.com/og-image.jpg">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://ziprenamer.com/og-image.jpg">
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
 
@@ -87,13 +99,13 @@
 
                 <!-- Language Switcher -->
                 <div class="flex space-x-2 border-l pl-4 border-gray-200">
-                    <button @click="setLang('en')"
+                    <button @click="setLang('en')" aria-label="Select English"
                         :class="{'font-bold text-primary': lang === 'en', 'text-gray-400': lang !== 'en'}"
                         class="hover:text-gray-900">EN</button>
-                    <button @click="setLang('fr')"
+                    <button @click="setLang('fr')" aria-label="Selectionner Français"
                         :class="{'font-bold text-primary': lang === 'fr', 'text-gray-400': lang !== 'fr'}"
                         class="hover:text-gray-900">FR</button>
-                    <button @click="setLang('es')"
+                    <button @click="setLang('es')" aria-label="Seleccionar Español"
                         :class="{'font-bold text-primary': lang === 'es', 'text-gray-400': lang !== 'es'}"
                         class="hover:text-gray-900">ES</button>
                 </div>
@@ -195,6 +207,80 @@
                     <h3 class="text-lg font-semibold mb-2" x-text="t('step3_title')">Download</h3>
                     <p class="text-gray-600" x-text="t('step3_desc')">Get a new ZIP file with organized contents. Fast,
                         secure, and private.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Use Cases Section -->
+        <div x-show="step === 1" class="mb-24">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12" x-text="t('use_cases_title')">Why Use
+                ZipRenamer?</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="p-6 bg-indigo-50 rounded-xl border border-indigo-100">
+                    <h3 class="font-bold text-lg mb-2 text-indigo-900" x-text="t('case1_title')">Organize Photos</h3>
+                    <p class="text-indigo-700 text-sm" x-text="t('case1_desc')">Renaming thousands of 'IMG_1234.JPG'...
+                    </p>
+                </div>
+                <div class="p-6 bg-green-50 rounded-xl border border-green-100">
+                    <h3 class="font-bold text-lg mb-2 text-green-900" x-text="t('case2_title')">Clean Invoices</h3>
+                    <p class="text-green-700 text-sm" x-text="t('case2_desc')">Standardize client invoices...</p>
+                </div>
+                <div class="p-6 bg-purple-50 rounded-xl border border-purple-100">
+                    <h3 class="font-bold text-lg mb-2 text-purple-900" x-text="t('case3_title')">Developer Assets</h3>
+                    <p class="text-purple-700 text-sm" x-text="t('case3_desc')">Batch rename assets...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features / Product Explanation -->
+        <div x-show="step === 1" class="mb-24">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12" x-text="t('features_title')">Privacy & Speed
+                First</h2>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-4">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3" x-text="t('feature_privacy_title')">Zero-Upload Extraction</h3>
+                    <p class="text-gray-600 leading-relaxed" x-text="t('feature_privacy_desc')">Your files are never
+                        fully extracted...</p>
+                </div>
+                <div class="flex flex-col items-center text-center">
+                    <div
+                        class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600 mb-4">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3" x-text="t('feature_speed_title')">Lightning Fast</h3>
+                    <p class="text-gray-600 leading-relaxed" x-text="t('feature_speed_desc')">Using streaming
+                        technology...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div x-show="step === 1" class="mb-24 max-w-3xl mx-auto">
+            <h2 class="text-3xl font-bold text-center text-gray-900 mb-12" x-text="t('faq_title')">Frequently Asked
+                Questions</h2>
+            <div class="space-y-6">
+                <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                    <h3 class="text-lg font-bold text-gray-900 mb-2" x-text="t('faq1_q')">Is it free?</h3>
+                    <p class="text-gray-600" x-text="t('faq1_a')">Yes, basic version is free.</p>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                    <h3 class="text-lg font-bold text-gray-900 mb-2" x-text="t('faq2_q')">Is my data secure?</h3>
+                    <p class="text-gray-600" x-text="t('faq2_a')">Absolutely...</p>
+                </div>
+                <div class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                    <h3 class="text-lg font-bold text-gray-900 mb-2" x-text="t('faq3_q')">Do I need to install anything?
+                    </h3>
+                    <p class="text-gray-600" x-text="t('faq3_a')">No...</p>
                 </div>
             </div>
         </div>
@@ -331,7 +417,8 @@
                                 </div>
                             </div>
 
-                            <button @click="removeRule(index)" class="text-gray-400 hover:text-red-500 p-1">
+                            <button @click="removeRule(index)" aria-label="Remove rule"
+                                class="text-gray-400 hover:text-red-500 p-1">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M6 18L18 6M6 6l12 12"></path>
