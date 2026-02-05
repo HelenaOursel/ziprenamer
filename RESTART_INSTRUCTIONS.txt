@@ -1,0 +1,42 @@
+╔══════════════════════════════════════════════════════════════╗
+║                   IMPORTANT: RESTART REQUIRED                 ║
+╚══════════════════════════════════════════════════════════════╝
+
+Your server is running OLD CODE and needs to be restarted!
+
+STEPS TO FIX:
+
+1. Go to the terminal where you ran "npm start"
+   (You should see logs like "[Analyze] File saved to:")
+
+2. Press Ctrl+C to stop the server
+
+3. Run this command again:
+   npm start
+
+4. You should now see:
+   Server Temp Dir: C:\Users\helena\zip_renamer\temp
+   (NOT C:\Users\helena\AppData\Local\Temp)
+
+5. Go to http://localhost:3000 in your browser
+
+6. Upload a ZIP file
+
+7. Check the "temp" folder in your project - you should see a file appear
+
+8. Add some rules and click "Download Renamed ZIP"
+
+═══════════════════════════════════════════════════════════════
+
+Why this is happening:
+- I made code changes to fix the bugs
+- Node.js doesn't automatically reload when files change
+- You need to manually restart the server to pick up the changes
+
+Alternative (auto-restart on changes):
+Instead of "npm start", you can use:
+   npm run dev
+
+This will automatically restart the server when you save code changes.
+
+═══════════════════════════════════════════════════════════════

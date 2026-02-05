@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZipRenamer Pro - Batch Rename Files in ZIP Archives</title>
+    <meta name="description"
+        content="The easiest way to batch rename files inside a ZIP archive online. Bulk rename, regex replace, add numbering, and reorganize files without extracting.">
+    <meta name="keywords"
+        content="zip file renamer, batch rename files, online zip tools, bulk rename utility, regex rename files, online zip editor">
+
+    <!-- Canonical & SEO -->
+    <link rel="canonical" href="https://ziprenamer.com/">
+    <link rel="alternate" hreflang="en" href="https://ziprenamer.com/?lang=en" />
+    <link rel="alternate" hreflang="fr" href="https://ziprenamer.com/?lang=fr" />
+    <link rel="alternate" hreflang="es" href="https://ziprenamer.com/?lang=es" />
+    <link rel="alternate" hreflang="x-default" href="https://ziprenamer.com/" />
+
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content="ZipRenamer Pro - Batch Rename Files in ZIP Archives">
+    <meta property="og:description"
+        content="Stop extracting and re-zipping. Rename files inside your ZIP archives instantly online.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ziprenamer.com/">
+    <meta property="og:image" content="https://ziprenamer.com/og-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://ziprenamer.com/og-image.jpg">
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "ZipRenamer Pro",
+      "operatingSystem": "Web",
+      "applicationCategory": "UtilitiesApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "5.00",
+        "priceCurrency": "USD"
+      },
+      "description": "Online tool to batch rename files inside ZIP archives without extracting.",
+      "featureList": "Batch Rename, Regex Support, Zero-upload extraction"
+    }
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Tailwind CSS (CDN for MVP) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#10B981',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="/js/app.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0K7B6TDE6S"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-0K7B6TDE6S');
+    </script>
+
+    <!-- Google Ads (Hidden for now) -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+</head>
+
+<body class="bg-gray-50 text-gray-800 antialiased" x-data="app">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PDLZKVKD" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <a href="/" class="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+                <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                    </path>
+                </svg>
+                <span class="text-xl font-bold tracking-tight text-gray-900">ZipRenamer<span
+                        class="text-primary">Pro</span></span>
+            </a>
+            <nav class="hidden md:flex space-x-8 text-sm font-medium items-center">
+                <a href="/#how-it-works" class="text-gray-500 hover:text-gray-900" x-text="t('how_it_works')">How it works</a>
+                <a href="#pricing" class="text-gray-500 hover:text-gray-900 hidden" x-text="t('pricing')">Pricing</a>
+
+                <!-- Language Switcher -->
+                <div class="border-l pl-4 border-gray-200">
+                    <select @change="setLang($event.target.value)" x-model="lang"
+                        class="px-3 py-2 rounded-lg border-2 border-gray-200 shadow-sm focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm font-medium bg-white transition-all hover:border-gray-300 cursor-pointer">
+                        <option value="en">🇬🇧 English</option>
+                        <option value="fr">🇫🇷 Français</option>
+                        <option value="es">🇪🇸 Español</option>
+                    </select>
+                </div>
+            </nav>
+            <div>
+                <!-- Growth Mode: All features free -->
+                <span
+                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
+                    x-text="t('free_badge')">
+                    Free / Beta
+                </span>
+                <!-- 
+                <template x-if="isPaid">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        Premium Active
+                    </span>
+                </template>
+                <template x-if="!isPaid">
+                    <button @click="showUpgradeModal = true" class="text-sm font-semibold text-primary hover:text-indigo-600">Upgrade</button>
+                </template> 
+                -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 py-12">
+
+        <!-- Hero Section -->
+        <div x-show="step === 1" class="text-center space-y-6 pt-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight" x-show="isProcessing">
+                Loading Configuration...
+            </h1>
+        </div>
+
+
+
+
+
+        <!-- Editor Section -->
+        <div x-show="step === 2" x-cloak class="space-y-8">
+            <div class="flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-gray-900" x-text="t('config_title')">Configure Rules</h2>
+                <button @click="window.location.reload()" class="text-sm text-gray-500 hover:text-gray-900 underline"
+                    x-text="t('start_over')">Start Over</button>
+            </div>
+
+            <!-- Rules Groups -->
+            <div class="space-y-6">
+                <template x-for="(group, gIndex) in ruleGroups" :key="group.id">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <!-- Group Header (Scope Selection) -->
+                        <div
+                            class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex flex-wrap gap-4 justify-between items-center text-sm">
+                            <div class="flex items-center gap-2 flex-1">
+                                <span class="font-bold text-gray-700">Scope:</span>
+                                <select x-model="group.scope"
+                                    class="px-3 py-2 rounded-lg border-2 border-gray-200 shadow-sm focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 font-medium text-gray-700 bg-white transition-all hover:border-gray-300 cursor-pointer">
+                                    <option value="global">All Files</option>
+                                    <option value="folders">All Folders</option>
+                                    <option value="extension">Specific Extension</option>
+                                    <option value="folder">Specific Folder</option>
+                                </select>
+
+                                <template x-if="group.scope === 'extension'">
+                                    <select x-model="group.scopeValue"
+                                        class="px-3 py-2 rounded-lg border-2 border-gray-200 shadow-sm focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-gray-700 bg-white transition-all hover:border-gray-300 cursor-pointer">
+                                        <option value="">Select Extension...</option>
+                                        <template x-for="ext in availableExtensions" :key="ext">
+                                            <option :value="ext" x-text="ext"></option>
+                                        </template>
+                                    </select>
+                                </template>
+                                <template x-if="group.scope === 'folder'">
+                                    <select x-model="group.scopeValue"
+                                        class="px-3 py-2 rounded-lg border-2 border-gray-200 shadow-sm focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-gray-700 bg-white transition-all hover:border-gray-300 cursor-pointer">
+                                        <option value="">Select Folder...</option>
+                                        <template x-for="folder in availableFolders" :key="folder">
+                                            <option :value="folder" x-text="folder"></option>
+                                        </template>
+                                    </select>
+                                </template>
+                            </div>
+                            <button @click="removeGroup(gIndex)"
+                                class="text-red-500 hover:text-red-700 text-xs font-semibold uppercase tracking-wider">
+                                Remove Group
+                            </button>
+                        </div>
+
+                        <!-- Rules List -->
+                        <div class="p-6 space-y-4">
+                            <template x-for="(rule, rIndex) in group.rules" :key="rule.id">
+                                <div
+                                    class="flex flex-col sm:flex-row gap-4 items-start sm:items-center bg-gray-50 p-4 rounded-lg border border-gray-200 relative">
+                                    <span class="text-sm font-bold text-gray-500 w-6" x-text="rIndex + 1 + '.'"></span>
+
+                                    <!-- Rule Type -->
+                                    <div class="font-medium text-gray-700 capitalize w-32">
+                                        <span x-text="rule.type.replace('_', ' ')"></span>
+                                    </div>
+
+                                    <!-- Rule Inputs -->
+                                    <div class="flex-1 flex gap-2 w-full">
+                                        <template x-if="rule.type === 'replace'">
+                                            <div class="flex gap-2 w-full">
+                                                <input type="text" x-model="rule.find" placeholder="Find..."
+                                                    class="w-1/2 rounded-md border-gray-300 shadow-sm text-sm">
+                                                <input type="text" x-model="rule.replace" placeholder="Replace with..."
+                                                    class="w-1/2 rounded-md border-gray-300 shadow-sm text-sm">
+                                            </div>
+                                        </template>
+                                        <template x-if="['prefix', 'suffix'].includes(rule.type)">
+                                            <input type="text" x-model="rule.text" placeholder="Text..."
+                                                class="w-full rounded-md border-gray-300 shadow-sm text-sm">
+                                        </template>
+                                        <template x-if="rule.type === 'numbering'">
+                                            <div class="flex gap-2 w-full items-center text-sm">
+                                                <span>Start:</span>
+                                                <input type="number" x-model.number="rule.start"
+                                                    class="w-16 rounded-md border-gray-300 shadow-sm text-sm">
+                                                <span>Pos:</span>
+                                                <select x-model="rule.position"
+                                                    class="px-3 py-2 rounded-lg border-2 border-gray-200 shadow-sm focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm bg-white transition-all hover:border-gray-300 cursor-pointer">
+                                                    <option value="end">End</option>
+                                                    <option value="start">Start</option>
+                                                </select>
+                                            </div>
+                                        </template>
+                                    </div>
+
+                                    <button @click="removeRuleFromGroup(group.id, rIndex)"
+                                        class="text-gray-400 hover:text-red-500 p-1">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </template>
+
+                            <!-- Add Rule Toolbar -->
+                            <div class="flex flex-wrap gap-2 pt-2 border-t border-gray-100 mt-4">
+                                <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider py-2 mr-2">Add
+                                    Rule:</span>
+                                <button @click="addRuleToGroup(group.id, 'replace')"
+                                    class="px-2 py-1 bg-white border border-gray-200 rounded text-xs text-gray-600 hover:bg-gray-50">+
+                                    Replace</button>
+                                <button @click="addRuleToGroup(group.id, 'prefix')"
+                                    class="px-2 py-1 bg-white border border-gray-200 rounded text-xs text-gray-600 hover:bg-gray-50">+
+                                    Prefix</button>
+                                <button @click="addRuleToGroup(group.id, 'suffix')"
+                                    class="px-2 py-1 bg-white border border-gray-200 rounded text-xs text-gray-600 hover:bg-gray-50">+
+                                    Suffix</button>
+                                <button @click="addRuleToGroup(group.id, 'numbering')"
+                                    class="px-2 py-1 bg-white border border-gray-200 rounded text-xs text-gray-600 hover:bg-gray-50">+
+                                    Numbering</button>
+                                <button @click="addRuleToGroup(group.id, 'lowercase')"
+                                    class="px-2 py-1 bg-white border border-gray-200 rounded text-xs text-gray-600 hover:bg-gray-50">+
+                                    Lowercase</button>
+                                <button @click="addRuleToGroup(group.id, 'remove_special')"
+                                    class="px-2 py-1 bg-white border border-gray-200 rounded text-xs text-gray-600 hover:bg-gray-50">+
+                                    Clean</button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Add Group Button -->
+                <button @click="addGroup()"
+                    class="w-full py-4 border-2 border-dashed border-gray-300 rounded-xl text-gray-500 hover:border-primary hover:text-primary transition-colors flex items-center justify-center font-medium">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Add New Rule Group
+                </button>
+            </div>
+
+            <!-- Preview -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
+                    <h3 class="font-semibold text-gray-900" x-text="t('preview_title')">Preview Changes</h3>
+                    <div class="text-sm text-gray-500">
+                        <span x-text="files.length"></span> files
+                        <span x-show="limitExceeded && !isPaid" class="ml-2 text-red-600 font-bold">(Limit
+                            Exceeded)</span>
+                    </div>
+                </div>
+                <div class="max-h-96 overflow-y-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50 sticky top-0">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/2">
+                                    Before
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/2">
+                                    After
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <template x-for="(file, index) in files" :key="index">
+                                <tr x-show="!file.hideFromPreview" :class="{'bg-red-50': index >= 20 && !isPaid}">
+                                    <td class="px-6 py-3 text-sm text-gray-700">
+                                        <div class="flex items-center gap-2">
+                                            <template x-if="file.isDirectory">
+                                                <svg class="w-5 h-5 text-yellow-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path>
+                                                </svg>
+                                            </template>
+                                            <template x-if="!file.isDirectory">
+                                                <svg class="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                                    </path>
+                                                </svg>
+                                            </template>
+                                            <span class="truncate" x-text="file.originalName"></span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-3 text-sm">
+                                        <div class="flex items-center gap-2">
+                                            <span class="truncate font-medium text-gray-900" 
+                                                :class="{'text-primary': file.preview !== file.originalName}"
+                                                x-text="file.preview || file.originalName"></span>
+                                            <template x-if="index >= 20 && !isPaid">
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 flex-shrink-0">
+                                                    Locked
+                                                </span>
+                                            </template>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Action Bar -->
+            <div class="flex justify-end pt-4">
+                <button @click="downloadZip()" :disabled="isProcessing"
+                    class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
+                    <svg x-show="isProcessing" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="https://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                    </svg>
+                    <span x-text="t('download_btn')">Download Renamed ZIP</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Ad Container (Hidden) -->
+    <div id="ad-container" class="max-w-4xl mx-auto px-4 py-6 hidden">
+        <div
+            class="bg-gray-100 border border-gray-200 rounded-lg p-4 text-center text-gray-400 text-sm h-32 flex items-center justify-center">
+            <!-- <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                 data-ad-slot="XXXXXXXXXX"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script> -->
+            Advertisement Space
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div x-show="showUpgradeModal" x-cloak class="relative z-50" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div
+                    class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                    <div>
+                        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100">
+                            <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                            </svg>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-5">
+                            <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Upgrade to Pro
+                            </h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500">
+                                    The Free plan handles up to 20 files. You have <span class="font-bold text-gray-900"
+                                        x-text="files.length"></span> files in this ZIP.
+                                </p>
+                                <ul
+                                    class="mt-4 text-left text-sm text-gray-600 space-y-2 border-t border-b border-gray-100 py-4">
+                                    <li class="flex items-center">✅ Unlimited Files & Size</li>
+                                    <li class="flex items-center">✅ Advanced Regex Rules</li>
+                                    <li class="flex items-center">✅ Priority Processing</li>
+                                    <li class="flex items-center">✅ Support Indie Dev</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5 sm:mt-6">
+                        <button type="button" @click="startCheckout()"
+                            class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                            Upgrade now for $5
+                        </button>
+                        <button type="button" @click="showUpgradeModal = false"
+                            class="mt-2 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-full">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

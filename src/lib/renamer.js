@@ -61,7 +61,7 @@ function applyRenamingRules(originalName, index, rules) {
                 break;
             case 'numbering':
                 // Appends a number at end (or start if configured)
-                const num = String(index + (rule.start || 1)).padStart(rule.padding || 1, '0');
+                const num = String(index + (parseInt(rule.start) || 1)).padStart(rule.padding || 1, '0');
                 if (rule.position === 'start') {
                     newName = num + (rule.separator || '-') + newName;
                 } else {

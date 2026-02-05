@@ -84,30 +84,26 @@
     <!-- Header -->
     <header class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
+            <a href="/" class="flex items-center space-x-2 hover:opacity-80 transition-opacity">
                 <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
                     </path>
                 </svg>
-                <span class="text-xl font-bold tracking-tight text-gray-900">ZipRenamer<span
-                        class="text-primary">Pro</span></span>
-            </div>
+                <span class="text-xl font-bold tracking-tight text-gray-900">ZipRenamer<span class="text-primary">Pro</span></span>
+            </a>
             <nav class="hidden md:flex space-x-8 text-sm font-medium items-center">
-                <a href="#" class="text-gray-500 hover:text-gray-900" x-text="t('how_it_works')">How it works</a>
+                <a href="#how-it-works" class="text-gray-500 hover:text-gray-900" x-text="t('how_it_works')">How it works</a>
                 <a href="#pricing" class="text-gray-500 hover:text-gray-900 hidden" x-text="t('pricing')">Pricing</a>
 
                 <!-- Language Switcher -->
-                <div class="flex space-x-2 border-l pl-4 border-gray-200">
-                    <button @click="setLang('en')" aria-label="Select English"
-                        :class="{'font-bold text-primary': lang === 'en', 'text-gray-400': lang !== 'en'}"
-                        class="hover:text-gray-900">EN</button>
-                    <button @click="setLang('fr')" aria-label="Selectionner Français"
-                        :class="{'font-bold text-primary': lang === 'fr', 'text-gray-400': lang !== 'fr'}"
-                        class="hover:text-gray-900">FR</button>
-                    <button @click="setLang('es')" aria-label="Seleccionar Español"
-                        :class="{'font-bold text-primary': lang === 'es', 'text-gray-400': lang !== 'es'}"
-                        class="hover:text-gray-900">ES</button>
+                <div class="border-l pl-4 border-gray-200">
+                    <select @change="setLang($event.target.value)" x-model="lang"
+                        class="px-3 py-2 rounded-lg border-2 border-gray-200 shadow-sm focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 text-sm font-medium bg-white transition-all hover:border-gray-300 cursor-pointer">
+                        <option value="en">🇬🇧 English</option>
+                        <option value="fr">🇫🇷 Français</option>
+                        <option value="es">🇪🇸 Español</option>
+                    </select>
                 </div>
             </nav>
             <div>
@@ -179,7 +175,7 @@
         </div>
 
         <!-- How it Works Section -->
-        <div x-show="step === 1" class="mt-24 mb-16">
+        <div x-show="step === 1" id="how-it-works" class="mt-24 mb-16">
             <h2 class="text-3xl font-bold text-center text-gray-900 mb-12" x-text="t('how_it_works')">How it Works</h2>
             <div class="grid md:grid-cols-3 gap-8">
                 <div class="text-center p-6 bg-white rounded-xl shadow-sm border border-gray-100">
@@ -365,155 +361,9 @@
             </div>
         </div>
 
-        <!-- Editor Section -->
-        <div x-show="step === 2" x-cloak class="space-y-8">
-            <div class="flex justify-between items-center">
-                <h2 class="text-2xl font-bold text-gray-900" x-text="t('config_title')">Configure Rules</h2>
-                <button @click="window.location.reload()" class="text-sm text-gray-500 hover:text-gray-900 underline"
-                    x-text="t('start_over')">Start Over</button>
-            </div>
-
-            <!-- Rules Toolbar -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                <div class="space-y-4">
-                    <template x-for="(rule, index) in rules" :key="rule.id">
-                        <div
-                            class="flex flex-col sm:flex-row gap-4 items-start sm:items-center bg-gray-50 p-4 rounded-lg border border-gray-200 relative group">
-                            <span class="text-sm font-bold text-gray-500 w-8" x-text="index + 1 + '.'"></span>
-
-                            <!-- Rule Type Selector (Read-onlyish or allowing type switch?) For simplicity, fixed type per row logic but let's allow basic config -->
-                            <div class="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-4 w-full">
-                                <div class="font-medium text-gray-700 capitalize flex items-center">
-                                    <span x-text="rule.type.replace('_', ' ')"></span>
-                                </div>
-
-                                <!-- Rule Inputs -->
-                                <div class="col-span-2 flex gap-2">
-                                    <template x-if="rule.type === 'replace'">
-                                        <div class="flex gap-2 w-full">
-                                            <input type="text" x-model="rule.find" placeholder="Find..."
-                                                class="w-1/2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
-                                            <input type="text" x-model="rule.replace" placeholder="Replace with..."
-                                                class="w-1/2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
-                                        </div>
-                                    </template>
-                                    <template x-if="['prefix', 'suffix'].includes(rule.type)">
-                                        <input type="text" x-model="rule.text" placeholder="Text..."
-                                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
-                                    </template>
-                                    <template x-if="rule.type === 'numbering'">
-                                        <div class="flex gap-2 w-full items-center text-sm">
-                                            <span>Start:</span>
-                                            <input type="number" x-model.number="rule.start"
-                                                class="w-16 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 text-sm">
-                                            <span>Pos:</span>
-                                            <select x-model="rule.position"
-                                                class="rounded-md border-gray-300 shadow-sm text-sm">
-                                                <option value="end">End</option>
-                                                <option value="start">Start</option>
-                                            </select>
-                                        </div>
-                                    </template>
-                                </div>
-                            </div>
-
-                            <button @click="removeRule(index)" aria-label="Remove rule"
-                                class="text-gray-400 hover:text-red-500 p-1">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    </template>
-                </div>
-
-                <!-- Add Rule Buttons -->
-                <div class="mt-6 flex flex-wrap gap-2">
-                    <button @click="addRule('replace')"
-                        class="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
-                        x-text="t('add_replace')">+
-                        Replace</button>
-                    <button @click="addRule('prefix')"
-                        class="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
-                        x-text="t('add_prefix')">+
-                        Prefix</button>
-                    <button @click="addRule('suffix')"
-                        class="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
-                        x-text="t('add_suffix')">+
-                        Suffix</button>
-                    <button @click="addRule('numbering')"
-                        class="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
-                        x-text="t('add_numbering')">+
-                        Numbering</button>
-                    <button @click="addRule('lowercase')"
-                        class="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
-                        x-text="t('add_lowercase')">+
-                        Lowercase</button>
-                    <button @click="addRule('remove_special')"
-                        class="px-3 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
-                        x-text="t('add_clean')">+
-                        Clean</button>
-                </div>
-            </div>
-
-            <!-- Preview -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-gray-50">
-                    <h3 class="font-semibold text-gray-900" x-text="t('preview_title')">Preview Changes</h3>
-                    <div class="text-sm text-gray-500">
-                        <span x-text="files.length"></span> files
-                        <span x-show="limitExceeded && !isPaid" class="ml-2 text-red-600 font-bold">(Limit
-                            Exceeded)</span>
-                    </div>
-                </div>
-                <div class="max-h-96 overflow-y-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                    x-text="t('original_col')">
-                                    Original</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                    x-text="t('new_name_col')">
-                                    New Name (Preview)</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <template x-for="(file, index) in files" :key="index">
-                                <tr :class="{'bg-red-50': index >= 20 && !isPaid}">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 overflow-hidden text-ellipsis max-w-xs"
-                                        x-text="file.originalName"></td>
-                                    <td
-                                        class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 overflow-hidden text-ellipsis max-w-xs flex items-center">
-                                        <span x-text="previewName(file.originalName, index)"></span>
-                                        <template x-if="index >= 20 && !isPaid">
-                                            <span
-                                                class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">
-                                                Locked
-                                            </span>
-                                        </template>
-                                    </td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Action Bar -->
-            <div class="flex justify-end pt-4">
-                <button @click="downloadZip()" :disabled="isProcessing"
-                    class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
-                    <svg x-show="isProcessing" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                        xmlns="https://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-                        </circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                    </svg>
-                    <span x-text="t('download_btn')">Download Renamed ZIP</span>
-                </button>
-            </div>
+        <!-- Editor Section (Moved to config.html) -->
+        <div x-show="step === 2" x-cloak class="text-center py-12">
+            <p class="text-gray-500">Redirecting to configuration...</p>
         </div>
     </main>
 
