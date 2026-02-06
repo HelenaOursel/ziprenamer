@@ -389,33 +389,33 @@
                             </div>
                         </div>
                         <div class="flex-1">
-                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4" x-text="t('privacy_section_title')">
                                 Your Files Stay On Your Computer
                             </h2>
-                            <p class="text-lg text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+                            <p class="text-lg text-gray-700 dark:text-gray-300 mb-6 leading-relaxed" x-html="t('privacy_section_subtitle')">
                                 Unlike cloud-based renamers, we process your ZIP <strong>entirely in-browser</strong>. 
                                 The file never gets extracted to our servers. We read the archive in memory, 
                                 apply your rules, and send you the renamed ZIP—all client-side.
                             </p>
-                            <div class="grid grid-cols-3 gap-6 mt-6 bg-white dark:bg-gray-800 rounded-xl p-6 border border-blue-200">
+                            <div class="grid grid-cols-3 gap-6 mt-6 bg-white dark:bg-gray-800 rounded-xl p-6 border border-blue-200 dark:border-blue-700">
                                 <div class="text-center">
-                                    <div class="text-4xl font-bold text-blue-600 dark:text-blue-600">0</div>
-                                    <div class="text-xs text-gray-600 uppercase dark:text-gray-300 tracking-wide font-semibold mt-1">Server Extraction</div>
+                                    <div class="text-4xl font-bold text-blue-600 dark:text-blue-400">0</div>
+                                    <div class="text-xs text-gray-600 uppercase dark:text-gray-300 tracking-wide font-semibold mt-1" x-text="t('privacy_metric_server')">Server Extraction</div>
                                 </div>
                                 <div class="text-center">
-                                    <div class="text-4xl font-bold text-blue-600 dark:text-blue-600">0</div>
-                                    <div class="text-xs text-gray-600 uppercase dark:text-gray-300 tracking-wide font-semibold mt-1">Cloud Storage</div>
+                                    <div class="text-4xl font-bold text-blue-600 dark:text-blue-400">0</div>
+                                    <div class="text-xs text-gray-600 uppercase dark:text-gray-300 tracking-wide font-semibold mt-1" x-text="t('privacy_metric_cloud')">Cloud Storage</div>
                                 </div>
                                 <div class="text-center">
-                                    <div class="text-4xl font-bold text-blue-600 dark:text-blue-600">100%</div>
-                                    <div class="text-xs text-gray-600 uppercase dark:text-gray-300 tracking-wide font-semibold mt-1">Client-Side</div>
+                                    <div class="text-4xl font-bold text-blue-600 dark:text-blue-400">100%</div>
+                                    <div class="text-xs text-gray-600 uppercase dark:text-gray-300 tracking-wide font-semibold mt-1" x-text="t('privacy_metric_client')">Client-Side</div>
                                 </div>
                             </div>
-                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-6 flex items-center justify-center gap-2">
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-6 flex items-center justify-center gap-2">
                                 <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                                 </svg>
-                                GDPR Compliant • No file retention • Temp files auto-deleted
+                                <span x-text="t('privacy_footer')">GDPR Compliant • No file retention • Temp files auto-deleted</span>
                             </p>
                         </div>
                     </div>
@@ -426,8 +426,8 @@
         <!-- Power Features Section (NEW) -->
         <div x-show="step === 1" class="mb-24">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold dark:text-white text-gray-900 mb-3">Why Developers Choose ZipRenamer</h2>
-                <p class="text-gray-600 dark:text-gray-300">Features other tools don't have</p>
+                <h2 class="text-3xl font-bold dark:text-white text-gray-900 mb-3" x-text="t('power_section_title')">Why Developers Choose ZipRenamer</h2>
+                <p class="text-gray-600 dark:text-gray-300" x-text="t('power_section_subtitle')">Features other tools don't have</p>
             </div>
             <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                 <!-- Pattern Variables -->
@@ -436,15 +436,15 @@
                         <div class="w-12 h-12 bg-indigo-600 dark:bg-indigo-600 rounded-xl flex items-center justify-center text-white font-bold text-xl">
                             {  }
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Pattern Variables</h3>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white" x-text="t('power_pattern_title')">Pattern Variables</h3>
                     </div>
-                    <p class="text-gray-600 dark:text-gray-300 mb-4">Build complex rename patterns with 6 variables:</p>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4" x-text="t('power_pattern_desc')">Build complex rename patterns with 6 variables:</p>
                     <code class="block bg-gray-900 dark:bg-gray-800 text-green-400 px-4 py-3 rounded-lg font-mono text-sm mb-3">
                         {parent}_{date}_{index}_{name}
                     </code>
-                    <p class="text-sm text-gray-500 dark:text-gray-300">
-                        <strong class="text-gray-700 dark:text-gray-300">Input:</strong> photos/IMG_1234.jpg<br>
-                        <strong class="text-gray-700 dark:text-gray-300">Output:</strong> photos/photos_2026-02-05_001_IMG_1234.jpg
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                        <strong class="text-gray-700 dark:text-gray-200"><span x-text="t('power_pattern_example_input')">Input:</span></strong> photos/IMG_1234.jpg<br>
+                        <strong class="text-gray-700 dark:text-gray-200"><span x-text="t('power_pattern_example_output')">Output:</span></strong> photos/photos_2026-02-05_001_IMG_1234.jpg
                     </p>
                 </div>
 
@@ -456,24 +456,24 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Multi-Scope Rules</h3>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white" x-text="t('power_scope_title')">Multi-Scope Rules</h3>
                     </div>
-                    <p class="text-gray-600 dark:text-gray-300 mb-4">Apply different rules to different file types:</p>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4" x-text="t('power_scope_desc')">Apply different rules to different file types:</p>
                     <div class="space-y-2 text-sm">
                         <div class="flex items-center gap-2 bg-indigo-50 dark:bg-indigo-900 px-3 py-2 rounded-lg">
                             <span class="font-mono text-indigo-700 dark:text-indigo-300">.jpg</span>
-                            <span class="text-gray-500 dark:text-gray-300">→</span>
-                            <span class="text-gray-700 dark:text-gray-300">lowercase + numbering</span>
+                            <span class="text-gray-500 dark:text-gray-400">→</span>
+                            <span class="text-gray-700 dark:text-gray-200" x-text="t('power_scope_lowercase_numbering')">lowercase + numbering</span>
                         </div>
                         <div class="flex items-center gap-2 bg-purple-50 dark:bg-purple-900 px-3 py-2 rounded-lg">
                             <span class="font-mono text-purple-700 dark:text-purple-300">.pdf</span>
-                            <span class="text-gray-500 dark:text-gray-300">→</span>
-                            <span class="text-gray-700 dark:text-gray-300">add date prefix</span>
+                            <span class="text-gray-500 dark:text-gray-400">→</span>
+                            <span class="text-gray-700 dark:text-gray-200" x-text="t('power_scope_date_prefix')">add date prefix</span>
                         </div>
                         <div class="flex items-center gap-2 bg-green-50 dark:bg-green-900 px-3 py-2 rounded-lg">
                             <span class="font-mono text-green-700 dark:text-green-300">folders/</span>
-                            <span class="text-gray-500 dark:text-gray-300">→</span>
-                            <span class="text-gray-700 dark:text-gray-300">remove special chars</span>
+                            <span class="text-gray-500 dark:text-gray-400">→</span>
+                            <span class="text-gray-700 dark:text-gray-200" x-text="t('power_scope_remove_chars')">remove special chars</span>
                         </div>
                     </div>
                 </div>
@@ -486,16 +486,16 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Exclude Mode</h3>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white" x-text="t('power_exclude_title')">Exclude Mode</h3>
                     </div>
-                    <p class="text-gray-600 dark:text-gray-300 mb-4">Rename everything EXCEPT certain extensions:</p>
-                    <div class="bg-gray-50 dark:bg-gray-800 px-4 py-3 rounded-lg border border-gray-200">
-                        <p class="text-sm text-gray-700 dark:text-gray-300">
-                            <strong>Rule:</strong> Lowercase all files<br>
-                            <strong>Scope:</strong> Extension = .php<br>
-                            <strong>Exclude:</strong> ✅ Checked
+                    <p class="text-gray-600 dark:text-gray-300 mb-4" x-text="t('power_exclude_desc')">Rename everything EXCEPT certain extensions:</p>
+                    <div class="bg-gray-50 dark:bg-gray-700 px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600">
+                        <p class="text-sm text-gray-700 dark:text-gray-200">
+                            <strong x-text="t('power_exclude_rule')">Rule:</strong> Lowercase all files<br>
+                            <strong x-text="t('power_exclude_scope')">Scope:</strong> Extension = .php<br>
+                            <strong x-text="t('power_exclude_checked')">Exclude:</strong> ✅ Checked
                         </p>
-                        <p class="text-xs text-gray-500 dark:text-gray-300 mt-2">
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-2" x-text="t('power_exclude_result')">
                             Result: All files become lowercase EXCEPT .php files
                         </p>
                     </div>
@@ -509,14 +509,14 @@
                                 <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"></path>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Folder Hierarchy</h3>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white" x-text="t('power_folder_title')">Folder Hierarchy</h3>
                     </div>
-                    <p class="text-gray-600 dark:text-gray-300 mb-4">We understand your folder structure:</p>
-                    <div class="bg-gray-900 dark:bg-gray-800 px-4 py-3 rounded-lg font-mono text-xs text-green-400">
+                    <p class="text-gray-600 dark:text-gray-300 mb-4" x-text="t('power_folder_desc')">We understand your folder structure:</p>
+                    <div class="bg-gray-900 dark:bg-gray-950 px-4 py-3 rounded-lg font-mono text-xs text-green-400">
                         <div>RAW/IMG_001.jpg → RAW_IMG_001.jpg</div>
                         <div>EDITED/IMG_001.jpg → EDITED_IMG_001.jpg</div>
                     </div>
-                    <p class="text-xs text-gray-500 dark:text-gray-300 mt-3">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-3" x-html="t('power_folder_note')">
                         Use <code class="bg-gray-100 dark:bg-gray-800 px-1 text-green-400 rounded">{parent}</code> variable to include folder names
                     </p>
                 </div>
@@ -525,8 +525,8 @@
 
         <!-- How it Works Section -->
         <div x-show="step === 1" id="how-it-works" class="mt-24 mb-16">
-            <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-4">How It Works</h2>
-            <p class="text-center text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto">
+            <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-4" x-text="t('how_works_title')">How It Works</h2>
+            <p class="text-center text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto" x-text="t('how_works_subtitle')">
                 Process ZIP archives in-browser. No extraction, no server upload, no cleanup.
             </p>
             <div class="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
@@ -535,12 +535,12 @@
                         <div class="w-16 h-16 mx-auto bg-gradient-to-br from-indigo-500 to-purple-600 text-white rounded-xl flex items-center justify-center text-2xl font-bold shadow-lg">
                             1
                         </div>
-                        <h3 class="font-bold text-lg text-gray-900 dark:text-white" x-text="t('step1_title')">Upload ZIP</h3>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                        <h3 class="font-bold text-lg text-gray-900 dark:text-white" x-text="t('how_works_step1_title')">Upload ZIP</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed" x-text="t('how_works_step1_desc')">
                             Drag your archive. We analyze it instantly without extraction.
                         </p>
                     </div>
-                    <div class="hidden md:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10">
+                    <div class="hidden md:block absolute top-1/2 -right-6 transform -translate-y-1/2 z-10">
                         <svg class="w-6 h-6 text-indigo-400" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                         </svg>
@@ -551,12 +551,12 @@
                         <div class="w-16 h-16 mx-auto bg-gradient-to-br from-purple-500 to-pink-600 text-white rounded-xl flex items-center justify-center text-2xl font-bold shadow-lg">
                             2
                         </div>
-                        <h3 class="font-bold text-lg text-gray-900 dark:text-white" x-text="t('step2_title')">Configure Rules</h3>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                        <h3 class="font-bold text-lg text-gray-900 dark:text-white" x-text="t('how_works_step2_title')">Configure Rules</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed" x-text="t('how_works_step2_desc')">
                             Use templates or build custom patterns with variables.
                         </p>
                     </div>
-                    <div class="hidden md:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10">
+                    <div class="hidden md:block absolute top-1/2 -right-6 transform -translate-y-1/2 z-10">
                         <svg class="w-6 h-6 text-purple-400" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                         </svg>
@@ -567,12 +567,12 @@
                         <div class="w-16 h-16 mx-auto bg-gradient-to-br from-green-500 to-teal-600 text-white rounded-xl flex items-center justify-center text-2xl font-bold shadow-lg">
                             3
                         </div>
-                        <h3 class="font-bold text-lg text-gray-900 dark:text-white" x-text="t('step3_title')">Preview Changes</h3>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                        <h3 class="font-bold text-lg text-gray-900 dark:text-white" x-text="t('how_works_step3_title')">Preview Changes</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed" x-text="t('how_works_step3_desc')">
                             See exact before/after results. No surprises.
                         </p>
                     </div>
-                    <div class="hidden md:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10">
+                    <div class="hidden md:block absolute top-1/2 -right-6 transform -translate-y-1/2 z-10">
                         <svg class="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                         </svg>
@@ -583,8 +583,8 @@
                         <div class="w-16 h-16 mx-auto bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-xl flex items-center justify-center text-2xl font-bold shadow-lg">
                             4
                         </div>
-                        <h3 class="font-bold text-lg text-gray-900 dark:text-white">Download</h3>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                        <h3 class="font-bold text-lg text-gray-900 dark:text-white" x-text="t('how_works_step4_title')">Download</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed" x-text="t('how_works_step4_desc')">
                             Get your renamed ZIP. Original filename preserved.
                         </p>
                     </div>
@@ -595,15 +595,15 @@
                     <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                     </svg>
-                    <strong>Zero disk space used</strong> • Temp files auto-deleted • GDPR compliant
+                    <span x-text="t('how_works_footer')">Zero disk space used • Temp files auto-deleted • GDPR compliant</span>
                 </div>
             </div>
         </div>
 
         <!-- VS Manual Extraction (NEW) -->
-        <div x-show="step === 1" class="mb-24 bg-gray-900 rounded-2xl p-10 text-white">
-            <h2 class="text-3xl font-bold text-center mb-4 dark:text-white">Why Extract When You Can Rename Directly?</h2>
-            <p class="text-center text-gray-400 dark:text-gray-300 mb-10 max-w-2xl mx-auto">
+        <div x-show="step === 1" class="mb-24 bg-gray-900 dark:bg-gray-950 rounded-2xl p-10 text-white border border-gray-800">
+            <h2 class="text-3xl font-bold text-center mb-4" x-text="t('vs_manual_title')">Why Extract When You Can Rename Directly?</h2>
+            <p class="text-center text-gray-400 dark:text-gray-300 mb-10 max-w-2xl mx-auto" x-text="t('vs_manual_subtitle')">
                 Stop wasting time with the extract → rename → re-zip workflow
             </p>
             <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -613,37 +613,37 @@
                         <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
-                        <h3 class="text-xl font-bold text-red-300 dark:text-red-300">Manual Extraction</h3>
+                        <h3 class="text-xl font-bold text-red-300" x-text="t('vs_manual_old_title')">Manual Extraction</h3>
                     </div>
                     <div class="space-y-3 text-sm">
                         <div class="flex items-start gap-3">
                             <span class="text-red-400 font-bold">1.</span>
-                            <span class="text-gray-300">Right-click ZIP → Extract (wait 30-120s)</span>
+                            <span class="text-gray-300" x-text="t('vs_manual_step_extract')">Right-click ZIP → Extract (wait 30-120s)</span>
                         </div>
                         <div class="flex items-start gap-3">
                             <span class="text-red-400 font-bold">2.</span>
-                            <span class="text-gray-300">Open folder, select files manually</span>
+                            <span class="text-gray-300" x-text="t('vs_manual_step_open')">Open folder, select files manually</span>
                         </div>
                         <div class="flex items-start gap-3">
                             <span class="text-red-400 font-bold">3.</span>
-                            <span class="text-gray-300">Use OS renamer or bulk tool</span>
+                            <span class="text-gray-300" x-text="t('vs_manual_step_rename')">Use OS renamer or bulk tool</span>
                         </div>
                         <div class="flex items-start gap-3">
                             <span class="text-red-400 font-bold">4.</span>
-                            <span class="text-gray-300">Select all → right-click → Compress</span>
+                            <span class="text-gray-300" x-text="t('vs_manual_step_compress')">Select all → right-click → Compress</span>
                         </div>
                         <div class="flex items-start gap-3">
                             <span class="text-red-400 font-bold">5.</span>
-                            <span class="text-gray-300">Wait for re-zipping (30-120s)</span>
+                            <span class="text-gray-300" x-text="t('vs_manual_step_wait')">Wait for re-zipping (30-120s)</span>
                         </div>
                         <div class="flex items-start gap-3">
                             <span class="text-red-400 font-bold">6.</span>
-                            <span class="text-gray-300">Delete temp folder (or forget to)</span>
+                            <span class="text-gray-300" x-text="t('vs_manual_step_delete')">Delete temp folder (or forget to)</span>
                         </div>
                     </div>
                     <div class="mt-6 pt-4 border-t border-red-700">
-                        <div class="text-2xl font-bold text-red-300">~5-10 minutes</div>
-                        <div class="text-xs text-gray-400 mt-1">Plus risk of data loss or wrong compression</div>
+                        <div class="text-2xl font-bold text-red-300" x-text="t('vs_manual_time_old')">~5-10 minutes</div>
+                        <div class="text-xs text-gray-400 mt-1" x-text="t('vs_manual_risk')">Plus risk of data loss or wrong compression</div>
                     </div>
                 </div>
 
@@ -653,20 +653,20 @@
                         <svg class="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                         </svg>
-                        <h3 class="text-xl font-bold text-green-300">ZipRenamer</h3>
+                        <h3 class="text-xl font-bold text-green-300" x-text="t('vs_manual_new_title')">ZipRenamer</h3>
                     </div>
                     <div class="space-y-3 text-sm">
                         <div class="flex items-start gap-3">
                             <span class="text-green-400 font-bold">1.</span>
-                            <span class="text-gray-300">Drop ZIP on ZipRenamer (instant)</span>
+                            <span class="text-gray-300" x-text="t('vs_manual_step1_new')">Drop ZIP on ZipRenamer (instant)</span>
                         </div>
                         <div class="flex items-start gap-3">
                             <span class="text-green-400 font-bold">2.</span>
-                            <span class="text-gray-300">Configure rules with live preview</span>
+                            <span class="text-gray-300" x-text="t('vs_manual_step2_new')">Configure rules with live preview</span>
                         </div>
                         <div class="flex items-start gap-3">
                             <span class="text-green-400 font-bold">3.</span>
-                            <span class="text-gray-300">Click "Download Renamed ZIP"</span>
+                            <span class="text-gray-300" x-text="t('vs_manual_step3_new')">Click "Download Renamed ZIP"</span>
                         </div>
                         <div class="flex items-start gap-3 opacity-30">
                             <span class="font-bold">4.</span>
@@ -682,8 +682,8 @@
                         </div>
                     </div>
                     <div class="mt-6 pt-4 border-t border-green-700">
-                        <div class="text-2xl font-bold text-green-300">~30 seconds</div>
-                        <div class="text-xs text-gray-400 mt-1">Zero disk space used, zero cleanup needed</div>
+                        <div class="text-2xl font-bold text-green-300" x-text="t('vs_manual_time_new')">~30 seconds</div>
+                        <div class="text-xs text-gray-400 mt-1" x-text="t('vs_manual_clean')">Zero disk space used, zero cleanup needed</div>
                     </div>
                 </div>
             </div>
@@ -691,41 +691,41 @@
 
         <!-- Use Cases Section -->
         <div x-show="step === 1" class="mb-24">
-            <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-4">Built for Power Users</h2>
-            <p class="text-center text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto">
+            <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-4" x-text="t('usecase_section_title')">Built for Power Users</h2>
+            <p class="text-center text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto" x-text="t('usecase_section_subtitle')">
                 Real workflows from photographers, developers, and digital agencies
             </p>
             <div class="grid md:grid-cols-3 gap-8">
                 <div class="p-8 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900 dark:to-purple-900 rounded-2xl border-2 border-indigo-200">
                     <div class="text-4xl mb-4"><i class="fas fa-camera-retro text-indigo-600"></i></div>
                     <h3 class="font-bold text-xl mb-3 text-indigo-900 dark:text-indigo-300" x-text="t('usecase_photo_title')">Photo Shoot Delivery</h3>
-                    <p class="text-indigo-800 dark:text-indigo-300 text-sm mb-4">
+                    <p class="text-indigo-800 dark:text-indigo-300 text-sm mb-4" x-html="t('usecase_photo_desc')">
                         Rename 500 RAW files from <code class="bg-white dark:bg-gray-800 px-1 rounded">DSC_1234.jpg</code> to 
                         <code class="bg-white dark:bg-gray-800 px-1 rounded">ClientName_EventDate_001.jpg</code> in one click
                     </p>
-                    <div class="text-xs text-indigo-600 bg-white dark:text-indigo-300 dark:bg-gray-800 rounded-lg px-3 py-2 font-mono">
+                    <div class="text-xs text-indigo-600 bg-white dark:text-indigo-300 dark:bg-gray-800 rounded-lg px-3 py-2 font-mono" x-text="t('usecase_photo_pattern')">
                         Pattern: {parent}_{date}_{index}
                     </div>
                 </div>
                 <div class="p-8 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900 dark:to-emerald-900 rounded-2xl border-2 border-green-200">
                     <div class="text-4xl mb-4"><i class="fas fa-briefcase text-green-600"></i></div>
                     <h3 class="font-bold text-xl mb-3 text-green-900 dark:text-green-300" x-text="t('usecase_cms_title')">CMS Export Cleanup</h3>
-                    <p class="text-green-800 dark:text-green-300 text-sm mb-4">
+                    <p class="text-green-800 dark:text-green-300 text-sm mb-4" x-text="t('usecase_cms_desc')">
                         WordPress exports come with ugly filenames. Lowercase everything, remove special chars, 
                         add SEO-friendly patterns—all without extraction
                     </p>
-                    <div class="text-xs text-green-600 bg-white dark:text-green-300 dark:bg-gray-800 rounded-lg px-3 py-2 font-mono">
+                    <div class="text-xs text-green-600 bg-white dark:text-green-300 dark:bg-gray-800 rounded-lg px-3 py-2 font-mono" x-html="t('usecase_cms_template')">
                         Template: <strong>SEO Friendly</strong>
                     </div>
                 </div>
                 <div class="p-8 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900 dark:to-pink-900 rounded-2xl border-2 border-purple-200">
                     <div class="text-4xl mb-4"><i class="fas fa-bolt text-purple-600"></i></div>
                     <h3 class="font-bold text-xl mb-3 text-purple-900 dark:text-purple-300" x-text="t('usecase_dev_title')">Developer Asset Packs</h3>
-                    <p class="text-purple-800 dark:text-purple-300 text-sm mb-4">
+                    <p class="text-purple-800 dark:text-purple-300 text-sm mb-4" x-text="t('usecase_dev_desc')">
                         Batch rename sprites, icons, fonts with folder-aware patterns. Rename folders AND files 
                         in a single rule group
                     </p>
-                    <div class="text-xs text-purple-600 bg-white dark:text-purple-300 dark:bg-gray-800 rounded-lg px-3 py-2 font-mono">
+                    <div class="text-xs text-purple-600 bg-white dark:text-purple-300 dark:bg-gray-800 rounded-lg px-3 py-2 font-mono" x-text="t('usecase_dev_scope')">
                         Scope: All Folders + .png files
                     </div>
                 </div>
@@ -766,59 +766,59 @@
 
         <!-- FAQ Section -->
         <div x-show="step === 1" class="mb-24 max-w-4xl mx-auto">
-            <h2 class="text-3xl font-bold dark:text-white text-center text-gray-900 mb-4">Frequently Asked Questions</h2>
-            <p class="text-center text-gray-600 dark:text-gray-300 mb-12">Everything you need to know about ZipRenamer</p>
+            <h2 class="text-3xl font-bold dark:text-white text-center text-gray-900 mb-4" x-text="t('faq_section_title')">Frequently Asked Questions</h2>
+            <p class="text-center text-gray-600 dark:text-gray-300 mb-12" x-text="t('faq_section_subtitle')">Everything you need to know about ZipRenamer</p>
             <div class="space-y-4">
-                <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 rounded-xl p-6 hover:border-indigo-300 transition-colors">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3">Is it free?</h3>
-                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl p-6 hover:border-indigo-300 dark:hover:border-indigo-500 transition-colors">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3" x-text="t('faq_free_q')">Is it free?</h3>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed" x-text="t('faq_free_a')">
                         Yes! ZipRenamer is 100% free during beta. All features including pattern variables, 
                         advanced scoping, and unlimited files are available at no cost.
                     </p>
                 </div>
-                <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 rounded-xl p-6 hover:border-indigo-300 transition-colors">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3">How is this different from extracting my ZIP?</h3>
-                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl p-6 hover:border-indigo-300 dark:hover:border-indigo-500 transition-colors">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3" x-text="t('faq_extract_q')">How is this different from extracting my ZIP?</h3>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed" x-html="t('faq_extract_a')">
                         When you extract a ZIP, you're creating thousands of files on disk, which takes time and uses 
                         storage. ZipRenamer processes your archive <strong>in-memory</strong>—we read the structure, 
                         apply renames, and build a new ZIP without ever writing files to disk. It's faster, safer, 
                         and requires zero cleanup.
                     </p>
                 </div>
-                <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 rounded-xl p-6 hover:border-indigo-300 transition-colors">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3">Can I rename folders too?</h3>
-                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl p-6 hover:border-indigo-300 dark:hover:border-indigo-500 transition-colors">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3" x-text="t('faq_folders_q')">Can I rename folders too?</h3>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed" x-text="t('faq_folders_a')">
                         Absolutely! Use the "All Folders" scope or target specific folder names. You can rename both 
                         files AND folders in the same rule group, or create separate rules for each.
                     </p>
                 </div>
-                <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 rounded-xl p-6 hover:border-indigo-300 transition-colors">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3">Is my data secure?</h3>
-                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl p-6 hover:border-indigo-300 dark:hover:border-indigo-500 transition-colors">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3" x-text="t('faq_secure_q')">Is my data secure?</h3>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed" x-html="t('faq_secure_a')">
                         Your files never leave your computer. We process everything client-side in your browser. 
                         The ZIP is briefly uploaded to our server for renaming, then immediately deleted. We don't 
                         store, log, or have any access to your file contents. GDPR compliant.
                     </p>
                 </div>
-                <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 rounded-xl p-6 hover:border-indigo-300 transition-colors">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3">Do I need to install anything?</h3>
-                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl p-6 hover:border-indigo-300 dark:hover:border-indigo-500 transition-colors">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3" x-text="t('faq_install_q')">Do I need to install anything?</h3>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed" x-text="t('faq_install_a')">
                         No installation required. ZipRenamer runs entirely in your browser. Just visit the site, 
                         drop your ZIP, and start renaming. Works on Windows, Mac, and Linux.
                     </p>
                 </div>
-                <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 rounded-xl p-6 hover:border-indigo-300 transition-colors">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3">What are pattern variables?</h3>
-                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
+                <div class="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl p-6 hover:border-indigo-300 dark:hover:border-indigo-500 transition-colors">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-3" x-text="t('faq_variables_q')">What are pattern variables?</h3>
+                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-3" x-text="t('faq_variables_a')">
                         Pattern variables let you build dynamic filenames using placeholders:
                     </p>
-                    <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-1 bg-gray-50 dark:bg-gray-800 rounded-lg p-4 font-mono">
-                        <li><strong class="text-indigo-600 dark:text-indigo-300">{name}</strong> - original filename</li>
-                        <li><strong class="text-indigo-600 dark:text-indigo-300">{index}</strong> - sequential number (001, 002...)</li>
-                        <li><strong class="text-indigo-600 dark:text-indigo-300">{parent}</strong> - parent folder name</li>
-                        <li><strong class="text-indigo-600 dark:text-indigo-300">{date}</strong> - current date (YYYY-MM-DD)</li>
-                        <li><strong class="text-indigo-600 dark:text-indigo-300">{ext}</strong> - file extension</li>
-                        <li><strong class="text-indigo-600 dark:text-indigo-300">{depth}</strong> - folder depth level</li>
+                    <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-1 bg-gray-50 dark:bg-gray-900 rounded-lg p-4 font-mono">
+                        <li><strong class="text-indigo-600 dark:text-indigo-300">{name}</strong> - <span x-text="t('faq_var_name')">original filename</span></li>
+                        <li><strong class="text-indigo-600 dark:text-indigo-300">{index}</strong> - <span x-text="t('faq_var_index')">sequential number (001, 002...)</span></li>
+                        <li><strong class="text-indigo-600 dark:text-indigo-300">{parent}</strong> - <span x-text="t('faq_var_parent')">parent folder name</span></li>
+                        <li><strong class="text-indigo-600 dark:text-indigo-300">{date}</strong> - <span x-text="t('faq_var_date')">current date (YYYY-MM-DD)</span></li>
+                        <li><strong class="text-indigo-600 dark:text-indigo-300">{ext}</strong> - <span x-text="t('faq_var_ext')">file extension</span></li>
+                        <li><strong class="text-indigo-600 dark:text-indigo-300">{depth}</strong> - <span x-text="t('faq_var_depth')">folder depth level</span></li>
                     </ul>
                 </div>
             </div>
