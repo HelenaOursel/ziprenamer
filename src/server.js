@@ -257,7 +257,7 @@ app.post('/api/process', express.json(), async (req, res) => {
         });
 
         // Scope check helper function (defined once for all entries)
-        const matchScope = (name, scope, scopeValue, isDirectory) => {
+        const matchScope = (name, scope, scopeValue, isDirectory, exclude = false) => {
             if (!scope) return true;
             
             if (scope === 'global') {
@@ -276,7 +276,9 @@ app.post('/api/process', express.json(), async (req, res) => {
                 const ext = path.extname(name);
                 const value = scopeValue || '';
                 const targetExt = value.startsWith('.') ? value : (value ? '.' + value : '');
-                return targetExt ? ext.toLowerCase() === targetExt.toLowerCase() : true;
+                const extensionMatches = targetExt ? ext.toLowerCase() === targetExt.toLowerCase() : true;
+                // Apply exclude logic: if exclude is true, invert the match
+                return exclude ? !extensionMatches : extensionMatches;
             }
 
             if (scope === 'folder') {
@@ -316,7 +318,7 @@ app.post('/api/process', express.json(), async (req, res) => {
             for (const group of groups) {
                 if (!group || !Array.isArray(group.rules) || !group.rules.length) continue;
 
-                if (matchScope(normalizedName, group.scope, group.scopeValue, true)) {
+                if (matchScope(normalizedName, group.scope, group.scopeValue, true, group.exclude)) {
                     if (groupCounters[group.id] === undefined) {
                         groupCounters[group.id] = 0;
                     }
@@ -355,7 +357,7 @@ app.post('/api/process', express.json(), async (req, res) => {
             for (const group of groups) {
                 if (!group || !Array.isArray(group.rules) || !group.rules.length) continue;
 
-                if (matchScope(normalizedName, group.scope, group.scopeValue, false)) {
+                if (matchScope(normalizedName, group.scope, group.scopeValue, false, group.exclude)) {
                     if (groupCounters[group.id] === undefined) {
                         groupCounters[group.id] = 0;
                     }

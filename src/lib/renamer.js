@@ -68,6 +68,35 @@ function applyRenamingRules(originalName, index, rules) {
                     newName = newName + (rule.separator || '-') + num;
                 }
                 break;
+            case 'pattern':
+                if (rule.pattern) {
+                    // Extract path information from originalName
+                    const fullPath = originalName;
+                    const pathParts = fullPath.split('/').filter(p => p);
+                    const parentFolder = pathParts.length > 1 ? pathParts[pathParts.length - 2] : '';
+                    const depth = pathParts.length - 1; // subtract 1 for the file itself
+                    const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+                    const extWithoutDot = ext.replace('.', '');
+                    
+                    // Apply pattern
+                    const result = rule.pattern
+                        .replace(/\{name\}/g, name)
+                        .replace(/\{index\}/g, String(index + 1).padStart(3, '0'))
+                        .replace(/\{ext\}/g, extWithoutDot)
+                        .replace(/\{parent\}/g, parentFolder)
+                        .replace(/\{date\}/g, currentDate)
+                        .replace(/\{depth\}/g, String(depth));
+                    
+                    // Replace the entire name with the pattern result
+                    newName = result;
+                    
+                    // If pattern includes {ext}, user is handling extension themselves
+                    // So we clear the ext to avoid double extension
+                    if (rule.pattern.includes('{ext}')) {
+                        ext = '';
+                    }
+                }
+                break;
         }
     }
 

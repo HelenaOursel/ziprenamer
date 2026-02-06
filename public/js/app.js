@@ -13,18 +13,44 @@ document.addEventListener('alpine:init', () => {
         ruleGroups: [],
         availableExtensions: [],
         availableFolders: [],
+        pendingTemplate: null,
+        showScrollTop: false,
+        darkMode: false,
 
         // i18n
         lang: 'en',
         currentTranslations: {},
 
         init() {
+            // Initialize dark mode from localStorage or system preference
+            const storedDarkMode = localStorage.getItem('dark_mode');
+            if (storedDarkMode !== null) {
+                this.darkMode = storedDarkMode === 'true';
+            } else {
+                // Use system preference
+                this.darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            }
+            this.applyDarkMode();
+
+            // Listen for scroll events for "scroll to top" button
+            window.addEventListener('scroll', () => {
+                this.showScrollTop = window.pageYOffset > 300;
+            });
+
             const urlParams = new URLSearchParams(window.location.search);
 
-            // Handle Language from URL or default
+            // Handle Language from URL, localStorage, or default
             const langParam = urlParams.get('lang');
+            const storedLang = localStorage.getItem('preferred_language');
             const allowedLangs = ['en', 'fr', 'es'];
-            const startLang = allowedLangs.includes(langParam) ? langParam : 'en';
+            
+            // Priority: URL param > localStorage > default
+            let startLang = 'en';
+            if (langParam && allowedLangs.includes(langParam)) {
+                startLang = langParam;
+            } else if (storedLang && allowedLangs.includes(storedLang)) {
+                startLang = storedLang;
+            }
 
             this.setLang(startLang);
 
@@ -81,6 +107,9 @@ document.addEventListener('alpine:init', () => {
 
         async setLang(l) {
             this.lang = l;
+            // Store language preference in localStorage
+            localStorage.setItem('preferred_language', l);
+            
             try {
                 const res = await fetch(`/locales/${l}.json`);
                 if (res.ok) {
@@ -95,6 +124,37 @@ document.addEventListener('alpine:init', () => {
 
         t(key) {
             return this.currentTranslations[key] || key;
+        },
+
+        toggleDarkMode() {
+            this.darkMode = !this.darkMode;
+            localStorage.setItem('dark_mode', this.darkMode);
+            this.applyDarkMode();
+        },
+
+        applyDarkMode() {
+            if (this.darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        },
+
+        scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+
+        getRuleDescription(ruleType) {
+            const descMap = {
+                'replace': 'rule_replace_desc',
+                'prefix': 'rule_prefix_desc',
+                'suffix': 'rule_suffix_desc',
+                'numbering': 'rule_numbering_desc',
+                'lowercase': 'rule_lowercase_desc',
+                'remove_special': 'rule_remove_special_desc',
+                'pattern': 'rule_pattern_desc'
+            };
+            return this.t(descMap[ruleType] || '');
         },
 
         async loadFiles(tempId) {
@@ -112,13 +172,25 @@ document.addEventListener('alpine:init', () => {
                 // Recompute available scopes based on restored file list
                 this.computeAvailableScopes();
 
-                // Initialize default group if needed
-                if (this.ruleGroups.length === 0) {
-                    this.addGroup();
-                } else {
-                    // If groups already exist (e.g. navigating back), refresh previews
-                    this.updatePreviews();
-                }
+                // Check for pending template after a short delay to ensure everything is ready
+                setTimeout(() => {
+                    const pendingTemplate = localStorage.getItem('pending_template');
+                    if (pendingTemplate) {
+                        console.log('Loading template:', pendingTemplate);
+                        // Apply the template
+                        this.loadTemplate(pendingTemplate);
+                        // Clear the pending template
+                        localStorage.removeItem('pending_template');
+                    } else {
+                        // Initialize default group if needed
+                        if (this.ruleGroups.length === 0) {
+                            this.addGroup();
+                        } else {
+                            // If groups already exist (e.g. navigating back), refresh previews
+                            this.updatePreviews();
+                        }
+                    }
+                }, 100);
             } catch (e) {
                 alert('Session expired or invalid. Please upload again.');
                 window.location.href = '/';
@@ -160,6 +232,15 @@ document.addEventListener('alpine:init', () => {
         async handleFileSelect(e) {
             const file = e.target.files[0];
             if (file) this.uploadFile(file);
+            // Reset file input to allow selecting same file again
+            e.target.value = '';
+        },
+
+        selectTemplate(templateName) {
+            // Store template name in localStorage
+            localStorage.setItem('pending_template', templateName);
+            // Trigger file input
+            document.getElementById('fileInput').click();
         },
 
         async uploadFile(file) {
@@ -236,10 +317,86 @@ document.addEventListener('alpine:init', () => {
                 id: Date.now(),
                 scope: 'global',
                 scopeValue: '',
+                exclude: false,
                 rules: []
             });
-            // Auto-add one rule to the new group for better UX?
-            // this.addRuleToGroup(this.ruleGroups[this.ruleGroups.length - 1].id, 'replace');
+        },
+
+        loadTemplate(templateName) {
+            // Clear existing rules
+            this.ruleGroups = [];
+            
+            const templates = {
+                seo: [
+                    {
+                        id: Date.now(),
+                        scope: 'global',
+                        scopeValue: '',
+                        exclude: false,
+                        rules: [
+                            { type: 'lowercase', id: Date.now() + 1 },
+                            { type: 'replace', find: ' ', replace: '-', id: Date.now() + 2 },
+                            { type: 'remove_special', id: Date.now() + 3 }
+                        ]
+                    }
+                ],
+                photo: [
+                    {
+                        id: Date.now(),
+                        scope: 'global',
+                        scopeValue: '',
+                        exclude: false,
+                        rules: [
+                            { type: 'prefix', text: '2024_', id: Date.now() + 1 },
+                            { type: 'numbering', start: 1, padding: 3, separator: '_', position: 'end', id: Date.now() + 2 }
+                        ]
+                    }
+                ],
+                cms: [
+                    {
+                        id: Date.now(),
+                        scope: 'global',
+                        scopeValue: '',
+                        exclude: false,
+                        rules: [
+                            { type: 'lowercase', id: Date.now() + 1 },
+                            { type: 'replace', find: ' ', replace: '-', id: Date.now() + 2 },
+                            { type: 'remove_special', id: Date.now() + 3 }
+                        ]
+                    }
+                ],
+                code: [
+                    {
+                        id: Date.now(),
+                        scope: 'global',
+                        scopeValue: '',
+                        exclude: false,
+                        rules: [
+                            { type: 'prefix', text: 'asset_', id: Date.now() + 1 },
+                            { type: 'lowercase', id: Date.now() + 2 },
+                            { type: 'replace', find: ' ', replace: '_', id: Date.now() + 3 }
+                        ]
+                    }
+                ],
+                print: [
+                    {
+                        id: Date.now(),
+                        scope: 'global',
+                        scopeValue: '',
+                        exclude: false,
+                        rules: [
+                            { type: 'pattern', pattern: '{parent}_{index}_{name}', id: Date.now() + 1 }
+                        ]
+                    }
+                ]
+            };
+            
+            this.ruleGroups = templates[templateName] || [];
+            
+            // Trigger preview update after a short delay to ensure Alpine has updated the DOM
+            setTimeout(() => {
+                this.updatePreviews();
+            }, 100);
         },
 
         removeGroup(index) {
@@ -255,6 +412,7 @@ document.addEventListener('alpine:init', () => {
                 prefix: { type: 'prefix', text: 'new_' },
                 suffix: { type: 'suffix', text: '_v1' },
                 numbering: { type: 'numbering', start: 1, padding: 3, separator: '-', position: 'end' },
+                pattern: { type: 'pattern', pattern: '{name}_{index}' },
                 lowercase: { type: 'lowercase' },
                 uppercase: { type: 'uppercase' },
                 remove_special: { type: 'remove_special' }
@@ -333,7 +491,9 @@ document.addEventListener('alpine:init', () => {
                     }
                     else if (group.scope === 'extension' && group.scopeValue) {
                         let target = group.scopeValue.startsWith('.') ? group.scopeValue : '.' + group.scopeValue;
-                        if (!file.isDirectory && fullExt.toLowerCase() === target.toLowerCase()) match = true;
+                        let extensionMatches = !file.isDirectory && fullExt.toLowerCase() === target.toLowerCase();
+                        // Apply exclude logic: if exclude is true, invert the match
+                        match = group.exclude ? !extensionMatches : extensionMatches;
                     }
                     else if (group.scope === 'folder' && group.scopeValue) {
                         let norm = file.originalName.replace(/\\/g, '/');
@@ -398,6 +558,32 @@ document.addEventListener('alpine:init', () => {
                         break;
                     case 'remove_special':
                         baseName = baseName.replace(/[^a-zA-Z0-9\s-_]/g, '');
+                        break;
+                    case 'pattern':
+                        if (rule.pattern) {
+                            const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+                            const pathParts = pathPart.split('/').filter(p => p);
+                            const parentFolder = pathParts.length > 0 ? pathParts[pathParts.length - 1] : '';
+                            const depth = pathParts.length;
+                            const extWithoutDot = ext.replace(/^\./, '');
+                            
+                            const result = rule.pattern
+                                .replace(/\{name\}/g, baseName)
+                                .replace(/\{index\}/g, String(index + 1).padStart(3, '0'))
+                                .replace(/\{ext\}/g, extWithoutDot)
+                                .replace(/\{parent\}/g, parentFolder)
+                                .replace(/\{date\}/g, currentDate)
+                                .replace(/\{depth\}/g, String(depth));
+                            
+                            // Replace the entire basename with the pattern result
+                            baseName = result;
+                            
+                            // If pattern includes {ext}, user is handling extension themselves
+                            // So we clear the ext to avoid double extension
+                            if (rule.pattern.includes('{ext}')) {
+                                ext = '';
+                            }
+                        }
                         break;
                 }
             }
