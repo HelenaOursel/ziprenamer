@@ -11,6 +11,7 @@ const AdmZip = require('adm-zip');
 const { v4: uuidv4 } = require('uuid');
 const { applyRenamingRules } = require('./lib/renamer');
 const { createCheckoutSession, verifySessionAndCreateToken, isTokenValid } = require('./lib/payment');
+const { analyzeArchive } = require('./lib/analysis');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -116,12 +117,23 @@ app.post('/api/analyze', upload.single('file'), (req, res) => {
             console.warn('[Analyze] Could not save metadata:', e);
         }
 
+        // Run pre-analysis on archive
+        console.log('[Analyze] Running archive analysis...');
+        const analysis = analyzeArchive(files);
+        console.log('[Analyze] Analysis complete:', {
+            severity: analysis.severity,
+            conflicts: analysis.warnings.renameConflicts.length,
+            pathIssues: analysis.warnings.pathTooLong.length,
+            invalidChars: analysis.warnings.invalidChars.length
+        });
+
         res.json({
             files: files.slice(0, 500), // Cap payload size just in case
             totalFiles,
             limitExceeded: totalFiles > limit && !isPaid,
             tempId: path.basename(req.file.path), // Client sends this back to process
-            originalFileName: originalFileName
+            originalFileName: originalFileName,
+            analysis: analysis
         });
 
         // Note: In a real stateless split-server app, we'd upload to S3. 
@@ -179,11 +191,15 @@ app.get('/api/files/:tempId', (req, res) => {
             console.warn('[Restore] Could not load metadata:', e);
         }
 
+        // Re-run analysis for restored session
+        const analysis = analyzeArchive(files);
+
         res.json({
             files: files.slice(0, 500),
             totalFiles: files.length,
             tempId: tempId,
             originalFileName: originalFileName,
+            analysis: analysis,
             limitExceeded: false
         });
     } catch (e) {

@@ -16,6 +16,8 @@ document.addEventListener('alpine:init', () => {
         pendingTemplate: null,
         showScrollTop: false,
         darkMode: false,
+        analysis: null,
+        showAnalysis: true,
 
         // i18n
         lang: 'en',
@@ -157,6 +159,36 @@ document.addEventListener('alpine:init', () => {
             return this.t(descMap[ruleType] || '');
         },
 
+        getSeverityColor(severity) {
+            const colors = {
+                'critical': 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+                'high': 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
+                'medium': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+                'low': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+                'none': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+            };
+            return colors[severity] || colors.none;
+        },
+
+        getSeverityIcon(severity) {
+            const icons = {
+                'critical': '⛔',
+                'high': '⚠️',
+                'medium': '⚡',
+                'low': 'ℹ️',
+                'none': '✓'
+            };
+            return icons[severity] || icons.none;
+        },
+
+        formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        },
+
         async loadFiles(tempId) {
             try {
                 this.isProcessing = true;
@@ -167,6 +199,7 @@ document.addEventListener('alpine:init', () => {
                 this.files = data.files;
                 this.limitExceeded = data.limitExceeded;
                 this.originalFileName = data.originalFileName || null;
+                this.analysis = data.analysis || null;
                 this.step = 2; // Move to Config Step
 
                 // Recompute available scopes based on restored file list
@@ -271,6 +304,7 @@ document.addEventListener('alpine:init', () => {
                 this.tempId = data.tempId;
                 this.originalFileName = data.originalFileName || null;
                 this.limitExceeded = data.limitExceeded;
+                this.analysis = data.analysis || null;
 
                 // --- Extract Available Scopes ---
                 this.computeAvailableScopes();

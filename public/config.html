@@ -46,6 +46,7 @@
       "featureList": "Batch Rename, Regex Support, Zero-upload extraction"
     }
     </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -159,6 +160,160 @@
                 <button @click="window.location.reload()" class="text-sm text-gray-500 hover:text-gray-900 underline"
                     x-text="t('start_over')">Start Over</button>
             </div>
+
+            <!-- Archive Analysis Panel -->
+            <div x-show="analysis && showAnalysis" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <!-- Header -->
+                <div class="px-6 py-4 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900 dark:to-purple-900 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                        </svg>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white" x-text="t('analysis_title')">Archive Summary</h3>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold" :class="getSeverityColor(analysis.severity)" x-text="getSeverityIcon(analysis.severity) + ' ' + t('severity_' + analysis.severity)"></span>
+                    </div>
+                    <button @click="showAnalysis = false" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-700">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-indigo-600 dark:text-indigo-400" x-text="analysis.stats.totalFiles"></div>
+                        <div class="text-xs text-gray-600 dark:text-gray-300 uppercase tracking-wide mt-1" x-text="t('analysis_stats_files')">Files</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-purple-600 dark:text-purple-400" x-text="analysis.stats.totalDirectories"></div>
+                        <div class="text-xs text-gray-600 dark:text-gray-300 uppercase tracking-wide mt-1" x-text="t('analysis_stats_directories')">Directories</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-blue-600 dark:text-blue-400" x-text="formatFileSize(analysis.stats.totalSize)"></div>
+                        <div class="text-xs text-gray-600 dark:text-gray-300 uppercase tracking-wide mt-1" x-text="t('analysis_stats_total_size')">Total Size</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-green-600 dark:text-green-400" x-text="analysis.stats.maxDepth"></div>
+                        <div class="text-xs text-gray-600 dark:text-gray-300 uppercase tracking-wide mt-1" x-text="t('analysis_stats_max_depth')">Max Depth</div>
+                    </div>
+                </div>
+
+                <!-- Warnings -->
+                <div class="p-6 space-y-4" x-show="analysis.severity !== 'none'">
+                    <!-- Rename Conflicts -->
+                    <div x-show="analysis.warnings.renameConflicts.length > 0" x-data="{expanded: false}" class="border border-red-200 dark:border-red-800 rounded-lg overflow-hidden">
+                        <button @click="expanded = !expanded" class="w-full px-4 py-3 bg-red-50 dark:bg-red-900 flex justify-between items-center hover:bg-red-100 dark:hover:bg-red-800 transition-colors">
+                            <div class="flex items-center gap-2">
+                                <span class="text-2xl">⛔</span>
+                                <span class="font-semibold text-red-900 dark:text-red-200" x-text="t('analysis_warning_conflicts')">Rename Conflicts</span>
+                                <span class="px-2 py-0.5 bg-red-200 dark:bg-red-700 text-red-900 dark:text-red-200 rounded-full text-xs font-bold" x-text="analysis.warnings.renameConflicts.length"></span>
+                            </div>
+                            <svg class="w-5 h-5 text-red-600 dark:text-red-300 transition-transform" :class="{'rotate-180': expanded}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div x-show="expanded" x-collapse class="p-4 bg-white dark:bg-gray-800">
+                            <template x-for="conflict in analysis.warnings.renameConflicts" :key="conflict.directory">
+                                <div class="mb-3 p-3 bg-gray-50 dark:bg-gray-700 rounded border-l-4 border-red-500">
+                                    <div class="text-sm font-mono text-gray-600 dark:text-gray-300 mb-1"><span x-text="t('analysis_conflict_directory')"></span> <span x-text="conflict.directory"></span></div>
+                                    <div class="text-sm text-red-700 dark:text-red-300 mb-2"><span x-text="conflict.count"></span> <span x-text="t('analysis_conflict_would_become')"></span> <span class="font-bold" x-text="conflict.resultName"></span></div>
+                                    <div class="text-xs text-gray-600 dark:text-gray-400">
+                                        <template x-for="file in conflict.conflictingFiles.slice(0, 5)" :key="file">
+                                            <div class="font-mono" x-text="'• ' + file"></div>
+                                        </template>
+                                        <div x-show="conflict.conflictingFiles.length > 5" class="text-gray-500 dark:text-gray-500 mt-1">+ <span x-text="(conflict.conflictingFiles.length - 5)"></span> <span x-text="t('analysis_conflict_more')"></span></div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Path Too Long -->
+                    <div x-show="analysis.warnings.pathTooLong.length > 0" x-data="{expanded: false}" class="border border-orange-200 dark:border-orange-800 rounded-lg overflow-hidden">
+                        <button @click="expanded = !expanded" class="w-full px-4 py-3 bg-orange-50 dark:bg-orange-900 flex justify-between items-center hover:bg-orange-100 dark:hover:bg-orange-800 transition-colors">
+                            <div class="flex items-center gap-2">
+                                <span class="text-2xl">📏</span>
+                                <span class="font-semibold text-orange-900 dark:text-orange-200" x-text="t('analysis_warning_path_length')">Path Length Issues</span>
+                                <span class="px-2 py-0.5 bg-orange-200 dark:bg-orange-700 text-orange-900 dark:text-orange-200 rounded-full text-xs font-bold" x-text="analysis.warnings.pathTooLong.length"></span>
+                            </div>
+                            <svg class="w-5 h-5 text-orange-600 dark:text-orange-300 transition-transform" :class="{'rotate-180': expanded}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div x-show="expanded" x-collapse class="p-4 bg-white dark:bg-gray-800 max-h-64 overflow-y-auto">
+                            <template x-for="(item, idx) in analysis.warnings.pathTooLong.slice(0, 10)" :key="idx">
+                                <div class="mb-2 text-sm">
+                                    <div class="font-mono text-gray-700 dark:text-gray-300 break-all" x-text="item.path"></div>
+                                    <div class="text-xs text-orange-600 dark:text-orange-400 mt-1">
+                                        <span x-text="item.length"></span> <span x-text="t('analysis_path_chars')"></span> <span x-text="t('analysis_path_exceeds')"></span> <span x-text="item.os.toUpperCase()"></span> <span x-text="t('analysis_path_limit')"></span> (<span x-text="item.limit"></span>)
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Invalid Characters -->
+                    <div x-show="analysis.warnings.invalidChars.length > 0" x-data="{expanded: false}" class="border border-yellow-200 dark:border-yellow-800 rounded-lg overflow-hidden">
+                        <button @click="expanded = !expanded" class="w-full px-4 py-3 bg-yellow-50 dark:bg-yellow-900 flex justify-between items-center hover:bg-yellow-100 dark:hover:bg-yellow-800 transition-colors">
+                            <div class="flex items-center gap-2">
+                                <span class="text-2xl">⚠️</span>
+                                <span class="font-semibold text-yellow-900 dark:text-yellow-200" x-text="t('analysis_warning_invalid_chars')">Invalid Characters</span>
+                                <span class="px-2 py-0.5 bg-yellow-200 dark:bg-yellow-700 text-yellow-900 dark:text-yellow-200 rounded-full text-xs font-bold" x-text="analysis.warnings.invalidChars.length"></span>
+                            </div>
+                            <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-300 transition-transform" :class="{'rotate-180': expanded}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div x-show="expanded" x-collapse class="p-4 bg-white dark:bg-gray-800 max-h-64 overflow-y-auto">
+                            <template x-for="(item, idx) in analysis.warnings.invalidChars.slice(0, 10)" :key="idx">
+                                <div class="mb-2 text-sm">
+                                    <div class="font-mono text-gray-700 dark:text-gray-300 break-all" x-text="item.path"></div>
+                                    <div class="text-xs text-yellow-600 dark:text-yellow-400 mt-1">
+                                        <span x-text="t('analysis_invalid_for')"></span> <span x-text="item.os.toUpperCase()"></span>: <span class="font-mono" x-text="item.invalidChars.join(', ')"></span>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- System Files -->
+                    <div x-show="analysis.warnings.systemFiles.length > 0" x-data="{expanded: false}" class="border border-blue-200 dark:border-blue-800 rounded-lg overflow-hidden">
+                        <button @click="expanded = !expanded" class="w-full px-4 py-3 bg-blue-50 dark:bg-blue-900 flex justify-between items-center hover:bg-blue-100 dark:hover:bg-blue-800 transition-colors">
+                            <div class="flex items-center gap-2">
+                                <span class="text-2xl">🗂️</span>
+                                <span class="font-semibold text-blue-900 dark:text-blue-200" x-text="t('analysis_warning_system_files')">System Files</span>
+                                <span class="px-2 py-0.5 bg-blue-200 dark:bg-blue-700 text-blue-900 dark:text-blue-200 rounded-full text-xs font-bold" x-text="analysis.warnings.systemFiles.length"></span>
+                            </div>
+                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-300 transition-transform" :class="{'rotate-180': expanded}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div x-show="expanded" x-collapse class="p-4 bg-white dark:bg-gray-800 max-h-48 overflow-y-auto">
+                            <template x-for="(item, idx) in analysis.warnings.systemFiles" :key="idx">
+                                <div class="mb-1 text-sm font-mono text-gray-600 dark:text-gray-400" x-text="'• ' + item.path"></div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- No Issues -->
+                <div x-show="analysis.severity === 'none'" class="p-6 text-center">
+                    <svg class="w-16 h-16 text-green-500 dark:text-green-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <p class="text-lg font-semibold text-gray-900 dark:text-white" x-text="t('analysis_no_issues_title')">No Issues Detected</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1" x-text="t('analysis_no_issues_desc')">Your archive looks good! You can proceed with renaming.</p>
+                </div>
+            </div>
+
+            <!-- Show Analysis Button (if hidden) -->
+            <button x-show="analysis && !showAnalysis" @click="showAnalysis = true" class="w-full py-3 px-4 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl text-gray-600 dark:text-gray-400 hover:border-indigo-400 dark:hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center justify-center gap-2 font-medium">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                </svg>
+                <span x-text="t('analysis_show_button')">Show Archive Summary</span>
+            </button>
 
             <!-- Templates Section -->
             <div class="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900 dark:to-purple-900 rounded-xl p-6 border border-indigo-100">
